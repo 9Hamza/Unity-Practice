@@ -10,9 +10,10 @@ public class GameObjectActivation : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Goal"))
+        if (other.gameObject.CompareTag("Player"))
         {
             testBlock.SetActive(false);
+            gameObject.SetActive(false);
         }
     }
 }

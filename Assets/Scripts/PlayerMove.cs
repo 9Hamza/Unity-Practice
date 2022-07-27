@@ -6,9 +6,9 @@ using UnityEngine.XR;
 
 public class PlayerMove : MonoBehaviour
 {
-   // [SerializeField] private float gravity = 4.0f;
-   [SerializeField] private float speed = 2.0f;
-   
+   public float speed = 2.0f;
+   public int coinCount = 0;
+
    [SerializeField] private Camera camera;
 
    private CharacterController _cc;
