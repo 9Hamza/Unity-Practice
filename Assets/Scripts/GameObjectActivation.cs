@@ -1,0 +1,18 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEngine;
+
+public class GameObjectActivation : MonoBehaviour
+{
+    [SerializeField] private GameObject testBlock;
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Goal"))
+        {
+            testBlock.SetActive(false);
+        }
+    }
+}
