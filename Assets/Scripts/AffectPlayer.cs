@@ -14,7 +14,7 @@ public class AffectPlayer : MonoBehaviour
         {
             _playerMoveScript = other.GetComponent<PlayerMove>(); // Get a reference to the script PlayerMove
 
-            _playerMoveScript.speed = 15f;
+            _playerMoveScript.speed = 25f;
         }
     }
 }

@@ -14,7 +14,10 @@ public class PlayingWithBools : MonoBehaviour
     {
         if (activated)
         {
-            block.Translate(0, 3 * Time.deltaTime, 0);
+            if (block.transform.position.y < 9)
+            {
+                block.Translate(0, 3 * Time.deltaTime, 0);
+            }
         }
     }
 

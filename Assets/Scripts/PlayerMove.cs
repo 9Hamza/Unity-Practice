@@ -6,6 +6,8 @@ using UnityEngine.XR;
 
 public class PlayerMove : MonoBehaviour
 {
+   [SerializeField] private Transform teleportTo;
+   
    public float speed = 2.0f;
    public int coinCount = 0;
 
@@ -19,7 +21,9 @@ public class PlayerMove : MonoBehaviour
 
    private int _playerHealth = 3;
 
-   private void HandleMovement()
+   // private Rigidbody _rigidbody;
+
+   private void HandleMovementCC()
    {
       var direction = GetMovement(); // is it bad to store V3 in a var?
       var rot = camera.transform.rotation.eulerAngles;
@@ -28,7 +32,20 @@ public class PlayerMove : MonoBehaviour
       Quaternion q = Quaternion.Euler(rot);
       rot = q * direction;
 
+      // _rigidbody = GetComponent<Rigidbody>();
+      // _rigidbody.velocity = direction;
       _cc.Move(rot);
+   }
+
+   private void HandleMovementTranslate()
+   {
+      float horizontalInput = Input.GetAxisRaw("Horizontal") * speed  * Time.deltaTime;
+      float verticalInput = Input.GetAxisRaw("Vertical") * speed * Time.deltaTime;
+
+      _movement = new Vector3(horizontalInput, 0, verticalInput);
+      // _movement = new Vector3(horizontalInput, verticalInput, 0);
+      
+      transform.Translate(_movement);
    }
 
    private Vector3 GetMovement()
@@ -50,7 +67,9 @@ public class PlayerMove : MonoBehaviour
 
    private void Update()
    {
-      HandleMovement();
+      // HandleMovementTranslate();
+      
+      HandleMovementCC();
       
       // _rb.velocity = movement;
 
@@ -66,6 +85,13 @@ public class PlayerMove : MonoBehaviour
       {
          _playerHealth--;
       }
+
+      // if (collision.gameObject.CompareTag("Teleport"))
+      // {
+      //    _cc.enabled = false;
+      //    gameObject.transform.position = teleportTo.position;
+      //    _cc.enabled = true;
+      // }
    }
 
    private void OnCollisionExit(Collision other)
