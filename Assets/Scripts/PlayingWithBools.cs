@@ -8,6 +8,8 @@ public class PlayingWithBools : MonoBehaviour
     [SerializeField] private bool activated = false;
 
     [SerializeField] private Transform block;
+
+    [SerializeField] private GameObject _pepeAndCheckers;
     
     // Update is called once per frame
     void Update()
@@ -17,6 +19,10 @@ public class PlayingWithBools : MonoBehaviour
             if (block.transform.position.y < 9)
             {
                 block.Translate(0, 3 * Time.deltaTime, 0);
+            }
+            else
+            {
+                _pepeAndCheckers.SetActive(false);
             }
         }
     }
