@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class FPController : MonoBehaviour
 {
+
     // Camera
     [SerializeField] private Transform cameraTarget;
     private Camera _mainCamera;
@@ -16,8 +17,9 @@ public class FPController : MonoBehaviour
     [SerializeField] private float lookDownConstraint;
 
     // Movement
-    [SerializeField] private float moveSpeed;
-    [SerializeField] private float runSpeed;
+    public float MoveSpeed;
+    public float RunSpeed;
+    public int coinCount = 0;
     private CharacterController _characterController;
     private Vector3 _movement;
     private float _verticalRotationLimit;
@@ -54,7 +56,7 @@ public class FPController : MonoBehaviour
         Vector3 moveRight = transform.right * Input.GetAxisRaw("Horizontal"); // the right-facing side of the player object multiplied by horizontal inputs (A and D keys).
         
         // set movement speed based on if the player is holding down left shift
-        float currentSpeed = (Input.GetKey(KeyCode.LeftShift)) ? runSpeed : moveSpeed;
+        float currentSpeed = (Input.GetKey(KeyCode.LeftShift)) ? RunSpeed : MoveSpeed;
         
         // Generates movement
         _movement = (moveForward + moveRight).normalized * currentSpeed;

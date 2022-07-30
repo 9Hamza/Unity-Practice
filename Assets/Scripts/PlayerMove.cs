@@ -3,12 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
+using UnityEngine.SceneManagement;
 
 public class PlayerMove : MonoBehaviour
 {
    [SerializeField] private Transform teleportTo;
    
-   public float speed = 2.0f;
+   public float MoveSpeed = 10.0f;
+   public float RunSpeed = 20.0f;
    public int coinCount = 0;
 
    [SerializeField] private Camera camera;
@@ -39,9 +41,12 @@ public class PlayerMove : MonoBehaviour
 
    private void HandleMovementTranslate()
    {
-      float horizontalInput = Input.GetAxisRaw("Horizontal") * speed  * Time.deltaTime;
-      float verticalInput = Input.GetAxisRaw("Vertical") * speed * Time.deltaTime;
-
+      // set movement speed based on if the player is holding down left shift
+      float currentSpeed = (Input.GetKey(KeyCode.LeftShift)) ? RunSpeed : MoveSpeed;
+      
+      float horizontalInput = Input.GetAxisRaw("Horizontal") * currentSpeed  * Time.deltaTime;
+      float verticalInput = Input.GetAxisRaw("Vertical") * currentSpeed * Time.deltaTime;
+   
       _movement = new Vector3(horizontalInput, 0, verticalInput);
       // _movement = new Vector3(horizontalInput, verticalInput, 0);
       
@@ -50,9 +55,12 @@ public class PlayerMove : MonoBehaviour
 
    private Vector3 GetMovement()
    {
+      // set movement speed based on if the player is holding down left shift
+      float currentSpeed = (Input.GetKey(KeyCode.LeftShift)) ? RunSpeed : MoveSpeed;
+      
       // Since we are using rb.velocity, we won't need to use Time.deltaTime since it will interfere with the physics of the rigidbody
-      float horizontalInput = Input.GetAxisRaw("Horizontal") * speed  * Time.deltaTime;
-      float verticalInput = Input.GetAxisRaw("Vertical") * speed * Time.deltaTime;
+      float horizontalInput = Input.GetAxisRaw("Horizontal") * currentSpeed  * Time.deltaTime;
+      float verticalInput = Input.GetAxisRaw("Vertical") * currentSpeed * Time.deltaTime;
 
       _movement = new Vector3(horizontalInput, 0, verticalInput);
       _movement.y -= gravity * Time.deltaTime;
@@ -62,21 +70,20 @@ public class PlayerMove : MonoBehaviour
    private void Start()
    {
       _cc = GetComponent<CharacterController>();
-      
    }
 
    private void Update()
    {
+      HandleMovementCC();
+
+      if (gameObject.transform.position.y < -5)
+      {
+         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+      }
+      
       // HandleMovementTranslate();
       
-      HandleMovementCC();
-      
       // _rb.velocity = movement;
-
-      // transform.Translate(movement); // We don't want to use Translate since it is not meant for moving objects in four directions
-
-      // transform.position += new Vector3(0, 0, speed * Time.deltaTime);
-      // Debug.Log($"{Input.GetAxisRaw("Horizontal")}"); // current value of Horizontal input mapped to A-D
    }
 
    private void OnCollisionEnter(Collision collision)
@@ -85,13 +92,6 @@ public class PlayerMove : MonoBehaviour
       {
          _playerHealth--;
       }
-
-      // if (collision.gameObject.CompareTag("Teleport"))
-      // {
-      //    _cc.enabled = false;
-      //    gameObject.transform.position = teleportTo.position;
-      //    _cc.enabled = true;
-      // }
    }
 
    private void OnCollisionExit(Collision other)
@@ -103,7 +103,8 @@ public class PlayerMove : MonoBehaviour
    }
 
    private void FixedUpdate()
-   {
+   {  
+      // This didn't really work as intended
       // _cc.Move(_movement);
    }
 }

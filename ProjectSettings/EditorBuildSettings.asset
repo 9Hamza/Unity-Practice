@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/ThirdPersonMaze.unity
+    guid: 1d2760d99cc671947973d27def28f4dc
   m_configObjects: {}
